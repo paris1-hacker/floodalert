@@ -175,7 +175,7 @@ SIMPLE_JWT = {
 
 
 
-ALLOWED_HOSTS = ["127.0.0.1","localhost",]
+ALLOWED_HOSTS = ["127.0.0.1","localhost", 'floodalert-eight.vercel.app']
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles', 'static')
 
