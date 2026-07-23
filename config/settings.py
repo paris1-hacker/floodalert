@@ -14,12 +14,14 @@ from pathlib import Path
 import environ
 import os
 
-env = environ.Env()
-
-environ.Env.read_env()
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env()
+
+environ.Env.read_env(
+    os.path.join(BASE_DIR, '.env')
+)
 
 
 # Quick-start development settings - unsuitable for production
@@ -27,6 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
@@ -89,8 +92,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('NAME'),
+        'USER': env('USER'), 
+        'PASSWORD': env('PASSWORD'), 
+        'HOST': env('HOST'), 
+        'PORT': env('PORT'),
     }
 }
 
@@ -171,4 +178,5 @@ SIMPLE_JWT = {
 ALLOWED_HOSTS = ["127.0.0.1","localhost",]
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles', 'static')
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
