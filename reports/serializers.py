@@ -7,6 +7,6 @@ class FloodReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FloodReport
-        fields = ("id","reported_by","latitude","longitude","note","confirmation_count","reported_at","last_confirmed","expires_at","is_active")
-        read_only_fields = ("confirmation_count","reported_at","last_confirmed","expires_at","is_active")
+        fields = ("id","reported_by","latitude","longitude","note","confirmation_count","reported_at","last_confirmed","expires_at","status","is_active")
+        read_only_fields = ("confirmation_count","reported_at","last_confirmed","expires_at","status","is_active")
 

@@ -180,3 +180,8 @@ STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles', 'static')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# Flood report settings
+FLOOD_REPORT_TOLERANCE_METERS = 30
+DEFAULT_NEARBY_RADIUS_METERS = 1000

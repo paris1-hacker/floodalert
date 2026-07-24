@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
-from .serializers import RegisterSerializer, UserSerializer
+from .serializers import LogoutSerializer
 from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from .serializers import (
@@ -9,7 +9,6 @@ from .serializers import (
     RegisterSerializer,
     UserSerializer,
 )
-
 
 
 class RegisterAPIView(CreateAPIView):
@@ -68,5 +67,21 @@ class ProfileAPIView(RetrieveAPIView):
                 "success": True,
                 "message": "Profile retrieved successfully.",
                 "data": serializer.data,
+            }
+        )
+
+class LogoutAPIView(GenericAPIView):
+    serializer_class = LogoutSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+
+        return Response(
+            {
+                "success": True,
+                "message": "Logged out successfully.",
             }
         )

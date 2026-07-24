@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
+
 
 
 User =  get_user_model()
@@ -55,3 +56,15 @@ class ProfileAPIView(RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    def save(self):
+        try:
+            token = RefreshToken(self.validated_data["refresh"])
+            token.blacklist()
+        except TokenError:
+            raise serializers.ValidationError(
+                "Invalid or expired refresh token."
+            )
