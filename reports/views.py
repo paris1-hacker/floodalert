@@ -12,7 +12,21 @@ from django.shortcuts import get_object_or_404
 from django.db import transaction
 from .services import refresh_report_statuses
 from .utils import is_within_tolerance, distance_in_meters
-
+from drf_spectacular.utils import (
+    extend_schema,
+    OpenApiParameter,
+    OpenApiTypes,
+)
+@extend_schema(
+    parameters=[
+        OpenApiParameter(
+            name="status",
+            type=OpenApiTypes.STR,
+            location=OpenApiParameter.QUERY,
+            description="Filter reports by status. Allowed values: live, warning",
+        ),
+    ]
+)
 class FloodReportListCreateAPIView(ListCreateAPIView):
     serializer_class = FloodReportSerializer
 
