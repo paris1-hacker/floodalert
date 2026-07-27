@@ -17,16 +17,7 @@ from drf_spectacular.utils import (
     OpenApiParameter,
     OpenApiTypes,
 )
-@extend_schema(
-    parameters=[
-        OpenApiParameter(
-            name="status",
-            type=OpenApiTypes.STR,
-            location=OpenApiParameter.QUERY,
-            description="Filter reports by status. Allowed values: live, warning",
-        ),
-    ]
-)
+
 
 # def get_queryset(self):
 #     FloodReport.objects.filter(
@@ -39,6 +30,17 @@ from drf_spectacular.utils import (
 #         .select_related("user")
 #         .order_by("-last_confirmed", "-reported_at")
 #     )
+
+@extend_schema(
+    parameters=[
+        OpenApiParameter(
+            name="status",
+            type=OpenApiTypes.STR,
+            location=OpenApiParameter.QUERY,
+            description="Filter reports by status. Allowed values: live, warning",
+        ),
+    ]
+)
 class FloodReportListCreateAPIView(ListCreateAPIView):
     serializer_class = FloodReportSerializer
 
@@ -74,7 +76,7 @@ class FloodReportListCreateAPIView(ListCreateAPIView):
             {
                 "success": True,
                 "message": "Flood reports retrieved successfully.",
-                "data": serializer.data,
+                "data": FloodReportSerializer(serializer.data, many=True, context={"request": request}).data,
             }
         )
 
@@ -128,7 +130,7 @@ class FloodReportListCreateAPIView(ListCreateAPIView):
             {
                 "success": True,
                 "message": "Flood report created successfully.",
-                "data": FloodReportSerializer(flood_report,context={"request": request},).data
+                "data": FloodReportSerializer(flood_report, context={"request": request}).data
                 #"data": FloodReportSerializer(flood_report).data,
             },
             status=status.HTTP_201_CREATED,
@@ -158,7 +160,7 @@ class FloodReportRetrieveAPIView(RetrieveAPIView):
             {
                 "success": True,
                 "message": "Flood report retrieved successfully.",
-                "data": FloodReportSerializer(report,context={"request": request},).data
+                "data": FloodReportSerializer(report, context={"request": request}).data
                 # "data": FloodReportSerializer(report).data,
             }
         )
@@ -212,7 +214,7 @@ class ConfirmFloodReportAPIView(GenericAPIView):
             {
                 "success": True,
                 "message": "Flood report confirmed successfully.",
-                "data": FloodReportSerializer(report,context={"request": request},).data
+                "data": FloodReportSerializer(report, context={"request": request}).data
                 # "data": FloodReportSerializer(report).data,
             }
         )
