@@ -17,7 +17,6 @@ class RegisterAPIView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         user = serializer.save()
 
         return Response(
@@ -28,8 +27,6 @@ class RegisterAPIView(CreateAPIView):
             },
             status=status.HTTP_201_CREATED,
         )
-
-
 
 class LoginAPIView(GenericAPIView):
     serializer_class = LoginSerializer
@@ -48,10 +45,10 @@ class LoginAPIView(GenericAPIView):
                     "user": UserSerializer(data["user"]).data,
                     "tokens": data["tokens"],
                 },
-            }
+            }, status=status.HTTP_200_OK
         )
 
-
+# this will later change into using a profile model.
 class ProfileAPIView(RetrieveAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]

@@ -5,7 +5,6 @@ from django.db import models
 from django.utils import timezone
 
 class FloodReport(models.Model):
-
     STATUS_CHOICES = (
         ("live", "Live"),
         ("warning", "Awaiting Confirmation"),

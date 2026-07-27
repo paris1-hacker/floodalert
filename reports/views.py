@@ -27,6 +27,18 @@ from drf_spectacular.utils import (
         ),
     ]
 )
+
+# def get_queryset(self):
+#     FloodReport.objects.filter(
+#         is_active=True,
+#         expires_at__lte=timezone.now(),
+#     ).update(is_active=False)
+
+#     return (
+#         FloodReport.objects.filter(is_active=True)
+#         .select_related("user")
+#         .order_by("-last_confirmed", "-reported_at")
+#     )
 class FloodReportListCreateAPIView(ListCreateAPIView):
     serializer_class = FloodReportSerializer
 
@@ -47,12 +59,16 @@ class FloodReportListCreateAPIView(ListCreateAPIView):
         status_filter = self.request.query_params.get("status")
 
         if status_filter:
+            valid_statuses = ["live", "warning"]
+
+            if status_filter not in valid_statuses:
+                return FloodReport.objects.none()
+
             queryset = queryset.filter(status=status_filter)
 
-        return queryset
-
     def list(self, request, *args, **kwargs):
-        serializer = self.get_serializer(self.get_queryset(), many=True)
+        serializer = self.get_serializer(self.get_queryset(),many=True,context={"request": request})
+        # serializer = self.get_serializer(self.get_queryset(), many=True)
 
         return Response(
             {
@@ -112,10 +128,12 @@ class FloodReportListCreateAPIView(ListCreateAPIView):
             {
                 "success": True,
                 "message": "Flood report created successfully.",
-                "data": FloodReportSerializer(flood_report).data,
+                "data": FloodReportSerializer(flood_report,context={"request": request},).data
+                #"data": FloodReportSerializer(flood_report).data,
             },
             status=status.HTTP_201_CREATED,
         )
+
 class FloodReportRetrieveAPIView(RetrieveAPIView):
     serializer_class = FloodReportSerializer
 
@@ -140,22 +158,20 @@ class FloodReportRetrieveAPIView(RetrieveAPIView):
             {
                 "success": True,
                 "message": "Flood report retrieved successfully.",
-                "data": FloodReportSerializer(report).data,
+                "data": FloodReportSerializer(report,context={"request": request},).data
+                # "data": FloodReportSerializer(report).data,
             }
         )
 
 class ConfirmFloodReportAPIView(GenericAPIView):
     permission_classes = [IsAuthenticated]
 
+    @transaction.atomic    
     def post(self, request, pk):
         # Refresh statuses before allowing confirmation
         refresh_report_statuses()
 
-        report = get_object_or_404(
-            FloodReport,
-            pk=pk,
-            is_active=True,
-        )
+        report = get_object_or_404(FloodReport,pk=pk,is_active=True)
 
         # Prevent duplicate confirmations
         if Confirmation.objects.filter(
@@ -176,7 +192,6 @@ class ConfirmFloodReportAPIView(GenericAPIView):
         )
 
         now = timezone.now()
-
         report.confirmation_count += 1
         report.last_confirmed = now
         report.expires_at = now + timedelta(hours=2)
@@ -197,7 +212,8 @@ class ConfirmFloodReportAPIView(GenericAPIView):
             {
                 "success": True,
                 "message": "Flood report confirmed successfully.",
-                "data": FloodReportSerializer(report).data,
+                "data": FloodReportSerializer(report,context={"request": request},).data
+                # "data": FloodReportSerializer(report).data,
             }
         )
 
