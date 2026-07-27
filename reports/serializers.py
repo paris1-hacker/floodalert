@@ -21,6 +21,8 @@ class FloodReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = FloodReport
         fields = ("id","full_name","latitude","longitude","note","status","confirmation_count","reported_at","last_confirmed","expires_at","minutes_until_expiry","has_confirmed",)
+        read_only_fields = ("confirmation_count","reported_at","last_confirmed","expires_at","status","is_active", "minutes_until_expiry","has_confirmed",)
+
 
     def get_minutes_until_expiry(self, obj):
         remaining = obj.expires_at - timezone.now()
