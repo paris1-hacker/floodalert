@@ -183,4 +183,4 @@ ALLOWED_HOSTS = ["127.0.0.1","localhost", 'floodalert-eight.vercel.app']
 
 # Flood report settings
 FLOOD_REPORT_TOLERANCE_METERS = 30
-DEFAULT_NEARBY_RADIUS_METERS = 1000
+DEFAULT_NEARBY_RADIUS_METERS = 1000,
