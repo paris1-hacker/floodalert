@@ -77,7 +77,7 @@ class FloodReportListCreateAPIView(ListCreateAPIView):
             {
                 "success": True,
                 "message": "Flood reports retrieved successfully.",
-                "data": FloodReportSerializer(serializer.data, many=True, context={"request": request}).data,
+                "data": serializer.data
             }
         )
 
