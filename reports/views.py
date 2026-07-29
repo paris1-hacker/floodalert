@@ -57,7 +57,7 @@ class FloodReportListCreateAPIView(ListCreateAPIView):
             .select_related("user")
             .order_by("-last_confirmed", "-reported_at")
         )
-
+        
         status_filter = self.request.query_params.get("status")
 
         if status_filter:
@@ -70,8 +70,7 @@ class FloodReportListCreateAPIView(ListCreateAPIView):
         return queryset
 
     def list(self, request, *args, **kwargs):
-        serializer = self.get_serializer(self.get_queryset(),many=True,context={"request": request})
-        # serializer = self.get_serializer(self.get_queryset(), many=True)
+        serializer = self.get_serializer(self.get_queryset(),many=True, context={"request": request})
 
         return Response(
             {
@@ -132,7 +131,6 @@ class FloodReportListCreateAPIView(ListCreateAPIView):
                 "success": True,
                 "message": "Flood report created successfully.",
                 "data": FloodReportSerializer(flood_report, context={"request": request}).data
-                #"data": FloodReportSerializer(flood_report).data,
             },
             status=status.HTTP_201_CREATED,
         )
@@ -168,6 +166,7 @@ class FloodReportRetrieveAPIView(RetrieveAPIView):
 
 class ConfirmFloodReportAPIView(GenericAPIView):
     permission_classes = [IsAuthenticated]
+    
 
     @transaction.atomic    
     def post(self, request, pk):
@@ -216,7 +215,6 @@ class ConfirmFloodReportAPIView(GenericAPIView):
                 "success": True,
                 "message": "Flood report confirmed successfully.",
                 "data": FloodReportSerializer(report, context={"request": request}).data
-                # "data": FloodReportSerializer(report).data,
             }
         )
 
