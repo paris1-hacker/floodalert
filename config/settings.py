@@ -182,7 +182,7 @@ SIMPLE_JWT = {
 
 
 
-ALLOWED_HOSTS = ["127.0.0.1","localhost", 'floodalert-eight.vercel.app', 'floodalert-hqbr80ail-paris-projects-99f53123.vercel.app']
+ALLOWED_HOSTS = ["127.0.0.1","localhost", 'floodalert-eight.vercel.app','.vercel.app',]
 
 
 # Flood report settings
