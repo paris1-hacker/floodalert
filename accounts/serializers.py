@@ -1,3 +1,5 @@
+from venv import logger
+
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework import serializers
@@ -27,9 +29,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ("full_name","username","email","password")
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
-        EmailService.send_verification_email(user)
-        return user
+        return  User.objects.create_user(**validated_data)
+        
 
         
 class LoginSerializer(serializers.Serializer):

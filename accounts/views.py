@@ -22,7 +22,7 @@ class RegisterAPIView(CreateAPIView):
         return Response(
             {
                 "success": True,
-                "message": "User registered successfully. Please check your email for verification.",
+                "message": "User registered successfully.",
                 "data": UserSerializer(user).data,
             },
             status=status.HTTP_201_CREATED,
