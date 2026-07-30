@@ -5,6 +5,7 @@ from django.db import models
 class User(AbstractUser):
     full_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
+    is_verified = models.BooleanField(default=False, help_text="Whether the user's email has been verified.")
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username", "full_name"]

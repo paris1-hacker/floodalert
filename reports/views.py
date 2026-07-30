@@ -153,6 +153,7 @@ class FloodReportRetrieveAPIView(RetrieveAPIView):
         )
 
     def retrieve(self, request, *args, **kwargs):
+        
         report = self.get_object()
 
         return Response(
@@ -209,7 +210,7 @@ class ConfirmFloodReportAPIView(GenericAPIView):
                 "is_active",
             ]
         )
-
+        
         return Response(
             {
                 "success": True,

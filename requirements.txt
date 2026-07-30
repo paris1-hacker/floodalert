@@ -45,6 +45,7 @@ PyYAML==6.0.3
 redis==7.0.1
 referencing==0.37.0
 requests==2.33.1
+resend==2.35.0
 rpds-py==2026.6.3
 setuptools==80.9.0
 six==1.17.0

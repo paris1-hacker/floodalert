@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
-from .serializers import LogoutSerializer
+from .serializers import LogoutSerializer, VerifyEmailSerializer
 from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from .serializers import (
@@ -22,7 +22,7 @@ class RegisterAPIView(CreateAPIView):
         return Response(
             {
                 "success": True,
-                "message": "User registered successfully.",
+                "message": "User registered successfully. Please check your email for verification.",
                 "data": UserSerializer(user).data,
             },
             status=status.HTTP_201_CREATED,
@@ -81,4 +81,34 @@ class LogoutAPIView(GenericAPIView):
                 "success": True,
                 "message": "Logged out successfully.",
             }
+        )
+
+
+class VerifyEmailAPIView(GenericAPIView):
+    serializer_class = VerifyEmailSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user = serializer.validated_data["user"]
+
+        if user.is_verified:
+            return Response(
+                {
+                    "success": False,
+                    "message": "Email has already been verified.",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        user.is_verified = True
+        user.save(update_fields=["is_verified"])
+
+        return Response(
+            {
+                "success": True,
+                "message": "Email verified successfully.",
+            },
+            status=status.HTTP_200_OK,
         )

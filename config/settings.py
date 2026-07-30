@@ -186,3 +186,16 @@ ALLOWED_HOSTS = ["127.0.0.1","localhost", 'floodalert-eight.vercel.app']
 # Flood report settings
 FLOOD_REPORT_TOLERANCE_METERS = 30
 DEFAULT_NEARBY_RADIUS_METERS = 1000,
+
+
+RESEND_API_KEY = env("RESEND_API_KEY")
+
+DEFAULT_FROM_EMAIL = env(
+    "DEFAULT_FROM_EMAIL",
+    default="onboarding@resend.dev",
+)
+
+FRONTEND_URL = env(
+    "FRONTEND_URL",
+    default="http://localhost:3000",
+)
