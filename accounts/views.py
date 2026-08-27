@@ -84,7 +84,7 @@ class LogoutAPIView(GenericAPIView):
         )
 
 
-class VerifyEmailAPIView(GenericAPIView):
+# class VerifyEmailAPIView(GenericAPIView):
     serializer_class = VerifyEmailSerializer
 
     def post(self, request):

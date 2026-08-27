@@ -9,5 +9,5 @@ urlpatterns = [
     path("profile/",ProfileAPIView.as_view(), name="profile"),
     path("refresh/",TokenRefreshView.as_view(),name="token_refresh"),
     path( "logout/",LogoutAPIView.as_view(),name="logout"),
-     path("verify-email/",VerifyEmailAPIView.as_view(),name="verify-email"),
+    #  path("verify-email/",VerifyEmailAPIView.as_view(),name="verify-email"),
 ]
