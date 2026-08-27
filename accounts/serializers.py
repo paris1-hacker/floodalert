@@ -7,8 +7,8 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth import get_user_model
-from accounts.services.email_service import EmailService
-from accounts.services.email_service import EmailService
+# from accounts.services.email_service import EmailService
+# from accounts.services.email_service import EmailService
 
 
 
